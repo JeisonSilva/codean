@@ -27,8 +27,8 @@ jobs:
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release -r win-x64
       
-    - name: Publish NuGet Package
-      uses: nuget/nuget@v1    
+    - name: Setup NuGet.exe
+      uses: nuget/setup-nuget@v1 
       with:
         push: true
         nuget-api-key: ${{ secrets.NUGET_API_KEY }}
