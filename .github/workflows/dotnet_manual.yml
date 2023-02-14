@@ -25,7 +25,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal ./src
     
     - name: Pack NuGet Package
-      run: dotnet pack .\src\codean\codean.csproj -c Release /p:Platform=x64
+      run: dotnet pack -c Release /p:Platform=x64
       
     - name: Setup NuGet.exe
       uses: nuget/setup-nuget@v1 
