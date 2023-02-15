@@ -31,7 +31,9 @@ jobs:
       
     - name: Publicar Pacote NuGet
       uses: nuget/setup-nuget@v1
+      env:
+        APIKEY: ${{secrets.API_KEY}}
       with:
         nuget-version: 'latest'
-    - run: nuget setApiKey '${{secrets.API_KEY}}'
+    - run: nuget setApiKey "$APIKEY"
     - run: nuget push ./src/codean/nupkg/*.nupkg -Source "https://api.nuget.org/v3/index.json"
