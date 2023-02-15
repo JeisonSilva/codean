@@ -27,6 +27,11 @@ jobs:
     - name: Pack NuGet Package
       run: dotnet pack ./src/codean/codean.csproj -c Release /p:Platform=x64
     
+    - name: Exibe Chave
+      env:
+          API: ${{ secrets.NUGETAPIKEY }}
+      run: echo "chave de acesso $API"
+    
     - name: NuGet push
     # You may pin to the exact commit or the version.
     # uses: edumserrano/nuget-push@2c99a0cae97df631eb2526ddd171a55dd5228289
