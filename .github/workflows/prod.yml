@@ -30,4 +30,4 @@ jobs:
       run: dotnet pack ./src/codean/codean.csproj -c Release
       
     - name: Publish Nuget
-      run: dotnet nuget push ./src/codean/nupkg/*.nupkg -k ${{ secrets.NUGETAPIKEY }} --interactive -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./src/codean/nupkg/*.nupkg -k ${{ secrets.API_KEY }} --interactive -s https://api.nuget.org/v3/index.json
