@@ -33,5 +33,5 @@ jobs:
       uses: nuget/setup-nuget@v1
       with:
         nuget-version: 'latest'
-        nuget-api-key: ${{secrets.ApiKey}}
+        nuget-api-key: ${{secrets.NUGET_API_KEY }}
     - run: nuget push ./src/codean/nupkg/*.nupkg -Source "https://api.nuget.org/v3/index.json"
