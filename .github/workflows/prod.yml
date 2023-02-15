@@ -32,7 +32,7 @@ jobs:
     - name: Publicar Pacote NuGet
       uses: nuget/setup-nuget@v1
       env:
-        APIKEY: ${{secrets.API_KEY}}
+        APIKEY: ${{secrets.ApiKey}}
       with:
         nuget-version: 'latest'
     - run: nuget setApiKey "$APIKEY"
