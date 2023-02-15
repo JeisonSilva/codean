@@ -18,13 +18,13 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./src
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ./src --no-restore
       
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./src --no-build --verbosity normal
       
     - name: Nupkg
       run: dotnet pack ./src/codean/codean.csproj -c Release
