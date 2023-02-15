@@ -29,7 +29,9 @@ jobs:
     - name: Nupkg
       run: dotnet pack ./src/codean/codean.csproj -c Release
       
-    - name: Publish Nuget
-      env:
-        KEY: ${{ secrets.API_KEY }}
-      run: dotnet nuget push ./src/codean/nupkg/*.nupkg -k $KEY $ --interactive -s https://api.nuget.org/v3/index.json
+    - name: Publicar Pacote NuGet
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: 'latest'
+        api-key: ${{ secrets.API_KEY }}
+    - run: nuget push ./src/codean/nupkg/*.nupkg -Source "https://api.nuget.org/v3/index.json"
