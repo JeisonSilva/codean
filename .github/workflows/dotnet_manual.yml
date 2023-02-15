@@ -1,3 +1,4 @@
+
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
@@ -12,7 +13,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore ./src
+    - name: Build
+      run: dotnet build --no-restore ./src
+    - name: Test
+      run: dotnet test --no-build --verbosity normal ./src
+    
+    - name: Pack NuGet Package
+      run: dotnet pack ./src/codean/codean.csproj -c Release /p:Platform=x64
+    
     - name: Exibe Chave
       env:
-          API: ${{ secrets.NUGETAPIKEY }}
-      run: echo $API
+          API_KEY: ${{ secrets.NUGETAPIKEY }}
+    
+    - name: NuGet push
+    # You may pin to the exact commit or the version.
+    # uses: edumserrano/nuget-push@2c99a0cae97df631eb2526ddd171a55dd5228289
+      uses: edumserrano/nuget-push@v1.2.2
+      with:
+      # The API key for the NuGet server. Used when pushing the NuGet packages and symbols.
+        api-key: $API_KEY
+      # Indicates whether this actions should fail if the NuGet package being pushed already exists. Defaults to false.
+      # fail-if-exists: # optional, default is false
+      # The directory that will be used to push NuGet packages. It will push all NuGet packages (*.nupkg) and corresponding symbol packages (*.snupkg) present in the directory.
+      # working-directory: 
+      # The filepath for the NuGet package to be pushed.
+        nuget-package: ./src/codean/nupkg/*.nupkg
+      # The filepath for the symbols package to be pushed.
+      # symbols-package: # optional
+      
