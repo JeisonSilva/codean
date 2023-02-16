@@ -29,4 +29,4 @@ jobs:
         run: dotnet pack ./src/codean/codean.csproj -c Release
         
       - name: Envio do pacote para a plataforma Nuget
-        run: dotnet nuget push ./src/codean/nupkg/*.nupkg -k ${{ secrets.API_KEY }} -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push **/*.nupkg -k ${{ secrets.API_KEY }} -s https://api.nuget.org/v3/index.json
