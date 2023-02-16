@@ -12,6 +12,9 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
          dotnet-version: 6.0.x
+       
+      - name: Publicação do pacote
+        uses: Nuget/setup-nuget@v1.1.1
          
       - name: Restauração do pacote
         run: dotnet restore ./src
@@ -25,11 +28,5 @@ jobs:
       - name: Montagem do pacote
         run: dotnet pack ./src/codean/codean.csproj -c Release
         
-      - name: Publicação do pacote
-        uses: Nuget/setup-nuget@v1.1.1
-        with:
-         nuget-api-key: ${{ secrets.API_KEY }}
-         nuget-api-key-source: https://api.nuget.org/v3/index.json
-         
       - name: Envio do pacote para a plataforma Nuget
-        run: dotnet nuget push ./src/codean/nupkg/*.nupkg
+        run: dotnet nuget push ./src/codean/nupkg/*.nupkg -k ${{ secrets.API_KEY }} -s https://api.nuget.org/v3/index.json
