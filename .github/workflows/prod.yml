@@ -24,3 +24,9 @@ jobs:
         
       - name: Montagem do pacote
         run: dotnet pack ./src/codean/codean.csproj -c Release
+        
+      - name: Publicação do pacote
+        uses: Nuget/setup-nuget@v1.1.1
+        with:
+         nuget-api-key: ${{ secrets.API_KEY }}
+      - run: nuget push ./src/codean/nupkg/*.nupkg
