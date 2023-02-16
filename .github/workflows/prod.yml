@@ -21,3 +21,6 @@ jobs:
         
       - name: Testes de unidade
         run: dotnet test ./src --no-build --verbosity normal
+        
+      - name: Montagem do pacote
+        run: dotnet pack ./src/codean/codean.csproj -c Release
