@@ -32,5 +32,5 @@ jobs:
     - name: Setup NuGet.exe for use with actions
       uses: NuGet/setup-nuget@v1.1.1
       with:
-        nuget-api-key: '${{ secrets.API_KEY }}'
+        nuget-api-key: ${{ secrets.API_KEY }}
       run: nuget push ./codean/nupkg/*.nupkg
