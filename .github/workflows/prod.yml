@@ -32,4 +32,4 @@ jobs:
          nuget-api-key-source: https://api.nuget.org/v3/index.json
          
       - name: Envio do pacote para a plataforma Nuget
-        run: nuget push ./src/codean/nupkg/*.nupkg
+        run: dotnet nuget push ./src/codean/nupkg/*.nupkg
