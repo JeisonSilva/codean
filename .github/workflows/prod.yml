@@ -29,9 +29,8 @@ jobs:
     - name: Nupkg
       run: dotnet pack ./src/codean/codean.csproj -c Release
       
-    - name: Publish NuGet
-      env:
-        # Filepath of the project to be packaged, relative to root of repository
-        PROJECT_FILE_PATH: ./src/codean/codean.csproj
-      
-    - run dotnet nuget push $PROJECT_FILE_PATH -k '${{ secrets.API_KEY }}' -s https://api.nuget.org/v3/index.json
+    - name: Setup NuGet.exe for use with actions
+      uses: NuGet/setup-nuget@v1.1.1
+      with:
+        nuget-api-key: '${{ secrets.API_KEY }}'
+    - run: nuget push ./codean/nupkg/*.nupkg
