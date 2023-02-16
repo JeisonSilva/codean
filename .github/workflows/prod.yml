@@ -1,36 +1,23 @@
-L# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
 name: Produção
-
 on:
   workflow_dispatch:
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore ./src
+      - uses: actions/checkout@v3
       
-    - name: Build
-      run: dotnet build ./src --no-restore
-      
-    - name: Test
-      run: dotnet test ./src --no-build --verbosity normal
-      
-    - name: Nupkg
-      run: dotnet pack ./src/codean/codean.csproj -c Release
-      
-    - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.1.1
-      with:
-        nuget-api-key: ${{ secrets.API_KEY }}
-      run: nuget push ./codean/nupkg/*.nupkg
+      - name: Configuração do Dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+         dotnet-version: 6.0.x
+         
+      - name: Restauração do pacote
+        run: dotnet restore ./src
+        
+      - name: Build do pacote
+        run: dotnet build ./src --no-restore
+        
+      - name: Testes de unidade
+        run: dotnet test ./src --no-build --verbosity normal
