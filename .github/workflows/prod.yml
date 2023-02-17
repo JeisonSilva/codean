@@ -6,7 +6,7 @@ on:
     
     
 jobs:
-  restore:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,39 +16,22 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
          dotnet-version: 6.0.x
-       
+
       - name: Publicação do pacote
         uses: Nuget/setup-nuget@v1.1.1
 
       - name: Restauração do pacote
         run: dotnet restore ./src
 
-  build:
-    needs: restore
-    runs-on: ubuntu-latest
-    
-    steps:
       - name: Build do pacote
-        run: dotnet build ./src --no-restore
-
-  package_nuget:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Publicação do pacote
-        uses: Nuget/setup-nuget@v1.1.1  
+        run: dotnet build ./src --no-restore 
 
       - name: Montagem do pacote
         run: dotnet pack ./src/codean/codean.csproj -c Release
 
-      
-
-  publish:
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Envio do pacote para a plataforma Nuget
-        run: dotnet nuget push ./src/codean/nupkg/*.nupkg --source https://api.nuget.org/v3/index.json -k ${{ secrets.API_KEY }} 
+        run: dotnet nuget push ./src/codean/nupkg/*.nupkg --source https://api.nuget.org/v3/index.json -k ${{ secrets.API_KEY }}
+       
     
 
 

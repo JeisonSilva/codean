@@ -7,7 +7,25 @@ on:
     
 jobs:
 
-  restore:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Configuração do Dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+         dotnet-version: 6.0.x
+
+      - name: Restauração do pacote
+        run: dotnet restore ./src
+
+      - name: Build do pacote
+        run: dotnet build ./src --no-restore
+
+  testes:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -17,26 +35,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
          dotnet-version: 6.0.x
-       
-      - name: Publicação do pacote
-        uses: Nuget/setup-nuget@v1.1.1
 
-      - name: Restauração do pacote
-        run: dotnet restore ./src
-
-  build:
-    needs: restore
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Build do pacote
-        run: dotnet build ./src --no-restore
-
-  testes:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Testes de unidade
         run: dotnet test ./src --no-build --verbosity normal
 
@@ -45,6 +44,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
+      
+      - name: Configuração do Dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+         dotnet-version: 6.0.x
+
+      - name: Restauração do pacote
+        run: dotnet restore ./src
+
+      - name: Build do pacote
+        run: dotnet build ./src --no-restore
+
       - name: SonarCloud Scan 
         uses: SonarSource/sonarcloud-github-action@master
         env:
