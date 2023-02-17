@@ -1,11 +1,11 @@
-name: QA
+name: DEV
 on:
-  push:
-    branches:
-      - "release/*"
+  pull_request:
+    types: [opened, edited, closed]
     
     
 jobs:
+
   restore:
     runs-on: ubuntu-latest
 
@@ -31,28 +31,23 @@ jobs:
       - name: Build do pacote
         run: dotnet build ./src --no-restore
 
-  package_nuget:
+  testes:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Publicação do pacote
-        uses: Nuget/setup-nuget@v1.1.1  
+      - name: Testes de unidade
+        run: dotnet test ./src --no-build --verbosity normal
 
-      - name: Montagem do pacote
-        run: dotnet pack ./src/codean/codean.csproj -c Release
-
-      
-
-  publish:
+  sonarQube:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Envio do pacote para a plataforma Nuget
-        run: dotnet nuget push ./src/codean/nupkg/*.nupkg --source https://api.nuget.org/v3/index.json -k ${{ secrets.API_KEY }} 
-    
-
-
+      - name: SonarCloud Scan 
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
         
-
-
