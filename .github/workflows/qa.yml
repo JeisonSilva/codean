@@ -84,10 +84,9 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          cd ./src
-          ..\.\.sonar\scanner\dotnet-sonarscanner begin /k:"jeisonsilva-github_codean" /o:"jeisonsilva-github" /d:"sonar.coverage.jacoco.xmlReportPaths=**/dotCover.Output.xml" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"jeisonsilva-github_codean" /o:"jeisonsilva-github" /d:"sonar.coverage.jacoco.xmlReportPaths=**/dotCover.Output.xml" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build –no-incremental
           dotnet dotcover test --dcReportType=xml
-          ..\.\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
         
         
