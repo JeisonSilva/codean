@@ -1,8 +1,6 @@
-name: QA
+name: Produção
 on:
-  pull_request:
-    branches:
-      - main 
+  workflow_dispatch:
     
     
 jobs:
@@ -32,10 +30,3 @@ jobs:
       - name: Envio do pacote para a plataforma Nuget
         run: dotnet nuget push ./src/codean/nupkg/*.nupkg --source https://api.nuget.org/v3/index.json -k ${{ secrets.API_KEY }}
        
-    
-
-
-        
-        
-
-
