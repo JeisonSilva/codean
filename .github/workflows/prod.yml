@@ -1,7 +1,8 @@
 name: QA
 on:
   pull_request:
-    types: [opened, edited, closed]  
+    branches:
+      - main 
     
     
 jobs:
