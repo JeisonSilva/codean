@@ -21,4 +21,10 @@
     <ProjectReference Include="..\codean.analisador\codean.analisador.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
