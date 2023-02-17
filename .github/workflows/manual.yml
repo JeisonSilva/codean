@@ -1,7 +1,6 @@
 name: DEV
 on:
-  pull_request:
-    types: [opened, edited, closed]  
+  workflow_dispatch:
     
 jobs:
 
