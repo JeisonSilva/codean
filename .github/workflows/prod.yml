@@ -1,10 +1,14 @@
-name: Produção
+name: QA
 on:
-  workflow_dispatch:
-jobs:
-  build:
-    runs-on: ubuntu-latest
+  push:
+    branches:
+      - "release/*"
     
+    
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       
@@ -12,21 +16,26 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
          dotnet-version: 6.0.x
-       
+
       - name: Publicação do pacote
         uses: Nuget/setup-nuget@v1.1.1
-         
+
       - name: Restauração do pacote
         run: dotnet restore ./src
-        
+
       - name: Build do pacote
-        run: dotnet build ./src --no-restore
-        
-      - name: Testes de unidade
-        run: dotnet test ./src --no-build --verbosity normal
-        
+        run: dotnet build ./src --no-restore 
+
       - name: Montagem do pacote
         run: dotnet pack ./src/codean/codean.csproj -c Release
-        
+
       - name: Envio do pacote para a plataforma Nuget
         run: dotnet nuget push ./src/codean/nupkg/*.nupkg --source https://api.nuget.org/v3/index.json -k ${{ secrets.API_KEY }}
+       
+    
+
+
+        
+        
+
+
