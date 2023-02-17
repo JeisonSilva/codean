@@ -1,9 +1,6 @@
-name: QA
+name: DEV
 on:
-  push:
-    branches:
-      - "release/*"
-    
+  workflow_dispatch:
     
 jobs:
 
