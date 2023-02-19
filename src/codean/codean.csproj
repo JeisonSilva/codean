@@ -9,7 +9,7 @@
 	  <PackageOutputPath>./nupkg</PackageOutputPath>
 	  <PackAsTool>true</PackAsTool>
 	  <PackageId>codean</PackageId>
-	  <Version>0.1.2</Version>
+	  <Version>0.2.0</Version>
 	  <Authors>Jeison O. da Silva</Authors>
   </PropertyGroup>
 
