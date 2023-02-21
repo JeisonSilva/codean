@@ -1,6 +1,6 @@
+using codean.analisador.analizadores;
 using codean.analisador.modelodados;
 using FluentAssertions;
-using System.Runtime.InteropServices;
 
 namespace codean.analisador.tests
 {

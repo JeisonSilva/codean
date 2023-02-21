@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using codean.analisador;
+using codean.analisador.analizadores;
 using codean.analisador.modelodados;
 
 Console.WriteLine("Siga os seguintes passos!");
