@@ -13,6 +13,10 @@ namespace codean.analisador.leitorarquivo
         {
             return new ArquivoDadosGitLog(path);
         }
+
+        public bool ArquivoCriado()
+            => File.Exists(this.path);
+
         public void Open(Action<LeitorLinha> action)
         {
             if (File.Exists(path))
