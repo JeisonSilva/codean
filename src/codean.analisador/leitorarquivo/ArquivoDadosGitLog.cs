@@ -19,7 +19,7 @@ namespace codean.analisador.leitorarquivo
 
         public void Open(Action<LeitorLinha> action)
         {
-            if (File.Exists(path))
+            if (ArquivoCriado())
             {
                 using var file = File.OpenRead(path);
                 using var stream = new StreamReader(file);
