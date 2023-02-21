@@ -14,7 +14,7 @@ namespace codean.analisador.analizadores
             Commits = new(_commits);
             _ranking = new List<Ranking>(10);
 
-            LogGit.New(path).Open(leitor =>
+            ArquivoDadosGitLog.New(path).Open(leitor =>
             {
                 leitor.ProximaLinha(organizador =>
                 {
