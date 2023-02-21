@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using codean.analisador;
+using codean.analisador.modelodados;
 
 Console.WriteLine("Siga os seguintes passos!");
 Console.WriteLine("Entre pelo terminal em algum repositório que gostaria de fazer a análise");

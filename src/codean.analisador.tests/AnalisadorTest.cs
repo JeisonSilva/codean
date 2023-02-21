@@ -1,3 +1,4 @@
+using codean.analisador.modelodados;
 using FluentAssertions;
 using System.Runtime.InteropServices;
 
