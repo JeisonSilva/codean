@@ -6,6 +6,7 @@ namespace codean.analisador.modelodados
     public class GitLog
     {
         private PowerShell powerShell;
+        private string _pathRepositorio;
 
         private GitLog(PowerShell powerShell)
         {
@@ -18,6 +19,12 @@ namespace codean.analisador.modelodados
             return gitlog(new GitLog(p));
         }
 
+        public GitLog AddPathRepositorioGit(string path)
+        {
+            _pathRepositorio = path;
+            return this;
+        }
+
         public ArquivoDadosGitLog GerarArquivoDadosCommit()
         {
             if (!DiretorioTempExiste(@"c:\temp\"))
@@ -25,7 +32,12 @@ namespace codean.analisador.modelodados
             else
                 LimparPasta(@"c:\temp\");
 
+            
+
             string comando = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > c:\\temp\\logfile.log";
+            if (!string.IsNullOrEmpty(this._pathRepositorio))
+                powerShell.AddScript($"cd {this._pathRepositorio}");
+
             powerShell.AddScript(comando);
             powerShell.Invoke();
 
@@ -33,7 +45,7 @@ namespace codean.analisador.modelodados
         }
 
         private void LimparPasta(string pach)
-            => Directory.Delete(pach);
+            => Directory.Delete(pach, true);
 
         private void CriarDiertorioTemp(string path)
             => Directory.CreateDirectory(path);

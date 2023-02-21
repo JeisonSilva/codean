@@ -27,5 +27,18 @@ namespace codean.analisador.tests
 
             arquivoDadosGitLog.ArquivoCriado().Should().BeFalse();
         }
+
+        [Fact]
+        public void Deve_Informar_Que_Nao_Existe_Repositorio_Git_Para_Extrair_Log()
+        {
+            var arquivoDadosGitLog = GitLog.GerarArquivoDosCommitsPorPeriodo((gitlog) =>
+            {
+                return gitlog
+                .AddPathRepositorioGit(@"c:\temp")
+                .GerarArquivoDadosCommit();
+            });
+
+            arquivoDadosGitLog.ArquivoCriado().Should().BeFalse();
+        }
     }
 }
