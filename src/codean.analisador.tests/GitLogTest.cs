@@ -1,44 +1,45 @@
 ﻿using codean.analisador.leitorarquivo;
 using codean.analisador.modelodados;
+using codean.analisador.terminais;
 using FluentAssertions;
+using Moq;
+using Moq.AutoMock;
 
 namespace codean.analisador.tests
 {
     public class GitLogTest
     {
-        [Fact]
-        public void Deve_Gerar_Arquivo_GitLog_Para_Analise_De_Dados()
-        {   
-            var arquivoDadosGitLog = GitLog.GerarArquivoDosCommitsPorPeriodo((gitlog) => 
-            {
-                return gitlog.GerarArquivoDadosCommit();
-            });
+        private readonly AutoMocker _mock;
+        private readonly Mock<ICommandTerminal> _terminal;
 
-            arquivoDadosGitLog.ArquivoCriado().Should().BeTrue();
+        public GitLogTest()
+        {
+            _mock = new AutoMocker();
+            _terminal = _mock.GetMock<ICommandTerminal>();
         }
 
         [Fact]
         public void Deve_Informar_Arquivo_Nao_Criado_Quando_Nao_For_Bem_Sucedido_A_Criacao_Do_Arquivo_De_Dados()
         {
-            var arquivoDadosGitLog = GitLog.GerarArquivoDosCommitsPorPeriodo((gitlog) =>
+            var arquivoDadosGitLog = GitLog.GerarArquivoDosCommitsPorPeriodo(_terminal.Object, (gitlog) =>
             {
-                return ArquivoDadosGitLog.New(@"Teste");
+                return ArquivoDadosGitLog.New(gitlog, @"Teste");
             });
 
-            arquivoDadosGitLog.ArquivoCriado().Should().BeFalse();
+            arquivoDadosGitLog.IsCreatedFile().Should().BeFalse();
         }
 
         [Fact]
         public void Deve_Informar_Que_Nao_Existe_Repositorio_Git_Para_Extrair_Log()
         {
-            var arquivoDadosGitLog = GitLog.GerarArquivoDosCommitsPorPeriodo((gitlog) =>
+            var arquivoDadosGitLog = GitLog.GerarArquivoDosCommitsPorPeriodo(_terminal.Object, (gitlog) =>
             {
                 return gitlog
                 .AddPathRepositorioGit(@"c:\temp")
-                .GerarArquivoDadosCommit();
+                .GerarArquivoDadosCommit(new PathFileForAnalysis());
             });
 
-            arquivoDadosGitLog.ArquivoCriado().Should().BeFalse();
+            arquivoDadosGitLog.IsCreatedFile().Should().BeFalse();
         }
     }
 }

@@ -5,21 +5,20 @@ namespace codean.analisador.leitorarquivo
 {
     public class LeitorLinha
     {
-        private StreamReader stream;
+        FileGitLog fileGitLog;
         private OrganizadorCommits _organizador;
 
-        private LeitorLinha(StreamReader stream)
+        private LeitorLinha(FileGitLog fileGitLog)
         {
-            this.stream = stream;
+            this.fileGitLog = fileGitLog;
             _organizador = OrganizadorCommits.New();
         }
 
-        internal static LeitorLinha New(StreamReader stream) => new LeitorLinha(stream);
+        internal static LeitorLinha New(FileGitLog fileGitLog) => new LeitorLinha(fileGitLog);
 
         internal void ProximaLinha(Action<OrganizadorCommits> organizadorCommits, Action<List<Commit>> fimLeitura)
         {
-            var linha = string.Empty;
-            while ((linha = stream.ReadLine()) != null)
+            foreach (var linha in fileGitLog.ReadLine)
             {
                 if (string.IsNullOrEmpty(linha))
                 {

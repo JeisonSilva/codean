@@ -1,5 +1,6 @@
 using codean.analisador.leitorarquivo;
 using codean.analisador.modelodados;
+using System.IO;
 
 namespace codean.analisador.analizadores
 {
@@ -8,13 +9,26 @@ namespace codean.analisador.analizadores
         private readonly List<Commit> _commits;
         private List<Ranking> _ranking;
 
-        public Analisador(string path)
+        public static AnalisadorBuilder Instance(terminais.ICommandTerminal commandTerminal)
+            => new AnalisadorBuilder(new Analisador(), commandTerminal);
+
+
+        private Analisador()
         {
             _commits = new List<Commit>();
             Commits = new(_commits);
             _ranking = new List<Ranking>(10);
 
-            ArquivoDadosGitLog.New(path).Open(leitor =>
+        }
+
+        public Lazy<List<Commit>> Commits { get; }
+
+        public void AnalizarArquivo(ArquivoDadosGitLog arquivoDadosGitLog)
+        {
+            if (arquivoDadosGitLog == null)
+                throw new NullReferenceException("Não foi adicionado uma instancia de ArquivoDadosGitLog");
+
+            arquivoDadosGitLog.Open(leitor =>
             {
                 leitor.ProximaLinha(organizador =>
                 {
@@ -27,10 +41,7 @@ namespace codean.analisador.analizadores
                     _commits.AddRange(commits);
                 });
             });
-
         }
-
-        public Lazy<List<Commit>> Commits { get; }
 
         public Analisador ProcessarTotalAlteracoesPorArquivo()
         {
@@ -94,5 +105,7 @@ namespace codean.analisador.analizadores
         {
             return arquivos.SelectMany(l => l).GroupBy(x => x.Nome);
         }
+
+        
     }
 }

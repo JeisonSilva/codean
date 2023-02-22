@@ -1,29 +1,31 @@
+using codean.analisador.modelodados;
+
 namespace codean.analisador.leitorarquivo
 {
     public class ArquivoDadosGitLog
     {
         private string path;
+        private readonly GitLog gitLog;
 
-        public ArquivoDadosGitLog(string path)
+        public ArquivoDadosGitLog(modelodados.GitLog gitLog, string path)
         {
             this.path = path;
+            this.gitLog = gitLog;
         }
 
-        public static ArquivoDadosGitLog New(string path)
+        public static ArquivoDadosGitLog New(GitLog gitLog,string path)
         {
-            return new ArquivoDadosGitLog(path);
+            return new ArquivoDadosGitLog(gitLog, path);
         }
 
-        public bool ArquivoCriado()
-            => File.Exists(this.path);
+        public bool IsCreatedFile()
+            => gitLog.IsCreatedFile(path);
 
         public void Open(Action<LeitorLinha> action)
         {
-            if (ArquivoCriado())
+            if (IsCreatedFile())
             {
-                using var file = File.OpenRead(path);
-                using var stream = new StreamReader(file);
-                action(LeitorLinha.New(stream));
+                action(LeitorLinha.New(gitLog.OpenRead(path)));
             }
             else
             {

@@ -2,6 +2,7 @@
 
 using codean.analisador.analizadores;
 using codean.analisador.modelodados;
+using codean.analisador.terminais;
 
 Console.WriteLine("Siga os seguintes passos!");
 Console.WriteLine("Entre pelo terminal em algum repositório que gostaria de fazer a análise");
@@ -14,8 +15,12 @@ Console.ReadKey();
 
 try
 {
-    var analisador = new Analisador(path: @"c:\codean\logfile.log");
-    var result = analisador.ProcessarTotalAlteracoesPorArquivo();
+    var result = Analisador
+                .Instance(new PowerShellTerminal())
+                .AnalizarArquivo(new PathFileForAnalysis())
+                .Construir()
+                .ProcessarTotalAlteracoesPorArquivo();
+    
     var table = new ConsoleTables.ConsoleTable("Arquivo", "Total de alterações");
 
     foreach (var ranking in result.ExibirEmOrderDecrescenteOsTop(Top.Top10))

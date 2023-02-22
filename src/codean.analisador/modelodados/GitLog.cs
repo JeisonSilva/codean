@@ -1,22 +1,23 @@
 ﻿using codean.analisador.leitorarquivo;
+using codean.analisador.terminais;
 using System.Management.Automation;
 
 namespace codean.analisador.modelodados
 {
     public class GitLog
     {
-        private PowerShell powerShell;
+        private ICommandTerminal commandTerminal;
         private string _pathRepositorio;
 
-        private GitLog(PowerShell powerShell)
+        private GitLog(ICommandTerminal commandTerminal)
         {
-            this.powerShell = powerShell;
+            _pathRepositorio = string.Empty;
+            this.commandTerminal = commandTerminal;
         }
 
-        public static ArquivoDadosGitLog GerarArquivoDosCommitsPorPeriodo(Func<GitLog, ArquivoDadosGitLog> gitlog)
+        public static ArquivoDadosGitLog GerarArquivoDosCommitsPorPeriodo(ICommandTerminal commandTerminal, Func<GitLog, ArquivoDadosGitLog> gitlog)
         {
-            using var p = PowerShell.Create();
-            return gitlog(new GitLog(p));
+            return gitlog(new GitLog(commandTerminal));
         }
 
         public GitLog AddPathRepositorioGit(string path)
@@ -25,32 +26,38 @@ namespace codean.analisador.modelodados
             return this;
         }
 
-        public ArquivoDadosGitLog GerarArquivoDadosCommit()
+        public ArquivoDadosGitLog GerarArquivoDadosCommit(PathFileForAnalysis path)
         {
             if (!DiretorioTempExiste(@"c:\temp\"))
                 CriarDiertorioTemp(@"c:\temp\");
             else
-                LimparPasta(@"c:\temp\");
+                LimparPasta(path);
 
             
 
-            string comando = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > c:\\temp\\logfile.log";
+            string comando = $"git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > {(string)path}";
             if (!string.IsNullOrEmpty(this._pathRepositorio))
-                powerShell.AddScript($"cd {this._pathRepositorio}");
+                commandTerminal.AddScript($"cd {this._pathRepositorio}");
 
-            powerShell.AddScript(comando);
-            powerShell.Invoke();
+            commandTerminal.AddScript(comando);
+            commandTerminal.Invoke();
 
-            return new ArquivoDadosGitLog(@"c:\temp\logfile.log");
+            return new ArquivoDadosGitLog(this, path);
         }
 
         private void LimparPasta(string pach)
-            => Directory.Delete(pach, true);
+            => commandTerminal.DeleteFile(pach);
 
         private void CriarDiertorioTemp(string path)
-            => Directory.CreateDirectory(path);
+            => commandTerminal.DeleteDirectory(path);
 
         private bool DiretorioTempExiste(string path)
-            => Directory.Exists(path);
+            => commandTerminal.ExistsDirectory(path);
+
+        internal bool IsCreatedFile(string path)
+            => commandTerminal.IsCreatedFile(path);
+
+        internal FileGitLog OpenRead(string path)
+            => commandTerminal.CreateStream(path);
     }
 }
