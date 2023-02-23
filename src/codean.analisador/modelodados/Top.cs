@@ -1,4 +1,4 @@
-﻿namespace codean.analisador
+﻿namespace codean.analisador.modelodados
 {
     public enum Top
     {

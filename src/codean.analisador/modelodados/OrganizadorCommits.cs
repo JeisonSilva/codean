@@ -1,9 +1,10 @@
-namespace codean.analisador
+namespace codean.analisador.modelodados
 {
     public class OrganizadorCommits : IDisposable
     {
         private List<Commit> _commits;
         private string _novaLinha;
+        private Commit _commit;
 
         private OrganizadorCommits()
         {
@@ -12,7 +13,7 @@ namespace codean.analisador
             _novaLinha = string.Empty;
         }
 
-        public Lazy<List<Commit>> Commits { get; } 
+        public Lazy<List<Commit>> Commits { get; }
 
 
         internal static OrganizadorCommits New()
@@ -29,7 +30,11 @@ namespace codean.analisador
         internal OrganizadorCommits NovoCommit(Func<string, Commit> novoCommit)
         {
             if (_novaLinha.Contains("--"))
-                _commits.Add(novoCommit(_novaLinha));
+            {
+                _commit = novoCommit(_novaLinha);
+                _commits.Add(_commit);
+            }
+                
 
             return this;
         }
@@ -59,9 +64,11 @@ namespace codean.analisador
                     return this;
 
                 var arquivo = novoArquivo(_novaLinha);
-                _commits.ForEach((c) => c.Arquivos.Add(arquivo));
+
+                if(_commit != null)
+                    _commits.FirstOrDefault(x => x.Hash == _commit.Hash)?.Arquivos.Add(arquivo);
             }
-                
+
 
             return this;
         }

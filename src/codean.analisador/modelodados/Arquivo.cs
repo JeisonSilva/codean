@@ -1,4 +1,4 @@
-namespace codean.analisador
+namespace codean.analisador.modelodados
 {
     public record Arquivo
     {
@@ -6,26 +6,26 @@ namespace codean.analisador
         {
             var dados = linha.Split('\t');
 
-            if(int.TryParse(dados[0], out int f))
+            if (int.TryParse(dados[0], out int f))
             {
-                this.TotalNovasFuncionalidades = f;
+                TotalNovasFuncionalidades = f;
             }
             else
             {
-                this.TotalNovasFuncionalidades = 1;
+                TotalNovasFuncionalidades = 1;
             }
 
             if (int.TryParse(dados[1], out int a))
             {
-                this.TotalAlteracoes = a;
+                TotalAlteracoes = a;
             }
             else
             {
-                this.TotalAlteracoes = 0;
+                TotalAlteracoes = 0;
             }
-            
-            this.Nome = dados[2];
-            this.Total = this.TotalNovasFuncionalidades + this.TotalAlteracoes;
+
+            Nome = dados[2];
+            Total = TotalNovasFuncionalidades + TotalAlteracoes;
         }
 
         public string Nome { get; }

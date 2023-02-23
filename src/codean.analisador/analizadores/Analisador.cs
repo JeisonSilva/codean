@@ -1,17 +1,34 @@
-namespace codean.analisador
+using codean.analisador.leitorarquivo;
+using codean.analisador.modelodados;
+using System.IO;
+
+namespace codean.analisador.analizadores
 {
     public class Analisador
     {
         private readonly List<Commit> _commits;
         private List<Ranking> _ranking;
 
-        public Analisador(string path)
+        public static AnalisadorBuilder Instance(terminais.ICommandTerminal commandTerminal)
+            => new AnalisadorBuilder(new Analisador(), commandTerminal);
+
+
+        private Analisador()
         {
-            this._commits = new List<Commit>();
-            this.Commits = new(this._commits);
+            _commits = new List<Commit>();
+            Commits = new(_commits);
             _ranking = new List<Ranking>(10);
 
-            LogGit.New(path).Open(leitor =>
+        }
+
+        public Lazy<List<Commit>> Commits { get; }
+
+        public void AnalizarArquivo(ArquivoDadosGitLog arquivoDadosGitLog)
+        {
+            if (arquivoDadosGitLog == null)
+                throw new NullReferenceException("Não foi adicionado uma instancia de ArquivoDadosGitLog");
+
+            arquivoDadosGitLog.Open(leitor =>
             {
                 leitor.ProximaLinha(organizador =>
                 {
@@ -21,18 +38,15 @@ namespace codean.analisador
 
                 }, fimLeitura: (commits) =>
                 {
-                    this._commits.AddRange(commits);
+                    _commits.AddRange(commits);
                 });
             });
-
         }
-
-        public Lazy<List<Commit>> Commits { get;}
 
         public Analisador ProcessarTotalAlteracoesPorArquivo()
         {
-            var rankings= new List<Ranking>();
-            var arquivos = this.Commits.Value.Select(x => x.Arquivos);
+            var rankings = new List<Ranking>();
+            var arquivos = Commits.Value.Select(x => x.Arquivos);
             var arquivosAgrupados = AgruparArquivos(arquivos);
 
             foreach (var a in arquivosAgrupados)
@@ -48,7 +62,7 @@ namespace codean.analisador
         public Analisador ProcessarTotalAlteracoesPorExtencao(ExtencaoArquivo extencao)
         {
             var rankings = new List<Ranking>();
-            var arquivos = this.Commits.Value.Select(x => x.Arquivos);
+            var arquivos = Commits.Value.Select(x => x.Arquivos);
             var arquivosAgrupados = AgruparArquivos(arquivos);
 
             foreach (var a in arquivosAgrupados)
@@ -57,7 +71,7 @@ namespace codean.analisador
                 {
                     rankings.Add(new Ranking(nome: a.Key, total: a.Sum(x => x.Total)));
                 }
-                
+
             }
 
             _ranking = rankings;
@@ -91,5 +105,7 @@ namespace codean.analisador
         {
             return arquivos.SelectMany(l => l).GroupBy(x => x.Nome);
         }
+
+        
     }
 }
