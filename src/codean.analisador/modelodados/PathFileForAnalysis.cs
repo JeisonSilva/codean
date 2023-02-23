@@ -6,7 +6,7 @@
 
         public PathFileForAnalysis()
         {
-            _path = @"c:\temp\logfile.log";
+            _path = @$"{Directory.GetCurrentDirectory()}\logfile.log";
         }
 
         public PathFileForAnalysis(string path)

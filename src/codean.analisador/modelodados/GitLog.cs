@@ -28,13 +28,8 @@ namespace codean.analisador.modelodados
 
         public ArquivoDadosGitLog GerarArquivoDadosCommit(PathFileForAnalysis path)
         {
-            if (!DiretorioTempExiste(@"c:\temp\"))
-                CriarDiertorioTemp(@"c:\temp\");
-            else
-                LimparPasta(path);
 
-            
-
+            LimparPasta(path);
             string comando = $"git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > {(string)path}";
             if (!string.IsNullOrEmpty(this._pathRepositorio))
                 commandTerminal.AddScript($"cd {this._pathRepositorio}");
