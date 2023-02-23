@@ -4,6 +4,7 @@ using codean.analisador.analizadores;
 using codean.analisador.modelodados;
 using codean.analisador.terminais;
 
+Console.Clear();
 Console.WriteLine("Se estiver pronto presione o botão Enter, mas lembre de executar o procedimento a cima!");
 Console.ReadKey();
 

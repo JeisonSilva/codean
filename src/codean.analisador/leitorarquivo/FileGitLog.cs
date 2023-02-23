@@ -10,10 +10,11 @@
         }
 
         public virtual IEnumerable<string> ReadLine { get {
-                var linha = string.Empty;
-                while (!string.IsNullOrEmpty((linha = this.stream.ReadLine())))
+                while (!this.stream.EndOfStream)
                 {
-                    yield return linha;
+                    var linha = string.Empty;
+                    if (!string.IsNullOrEmpty((linha = this.stream.ReadLine())))
+                        yield return linha;
                 }    
             
                 yield break;
