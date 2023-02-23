@@ -7,7 +7,7 @@ namespace codean.analisador.analizadores
     public class Analisador
     {
         private readonly List<Commit> _commits;
-        private List<Ranking> _ranking;
+        private IEnumerable<Ranking> _ranking;
 
         public static AnalisadorBuilder Instance(terminais.ICommandTerminal commandTerminal)
             => new AnalisadorBuilder(new Analisador(), commandTerminal);
@@ -26,7 +26,7 @@ namespace codean.analisador.analizadores
         public void AnalizarArquivo(ArquivoDadosGitLog arquivoDadosGitLog)
         {
             if (arquivoDadosGitLog == null)
-                throw new NullReferenceException("Não foi adicionado uma instancia de ArquivoDadosGitLog");
+                return;
 
             arquivoDadosGitLog.Open(leitor =>
             {
@@ -45,16 +45,10 @@ namespace codean.analisador.analizadores
 
         public Analisador ProcessarTotalAlteracoesPorArquivo()
         {
-            var rankings = new List<Ranking>();
-            var arquivos = Commits.Value.Select(x => x.Arquivos);
-            var arquivosAgrupados = AgruparArquivos(arquivos);
+            _ranking = AgruparArquivos(Commits.Value.Select(x => x.Arquivos)).Select(a => {
+                return new Ranking(nome: a.Key, total: a.Sum(x => x.Total));
+            });
 
-            foreach (var a in arquivosAgrupados)
-            {
-                rankings.Add(new Ranking(nome: a.Key, total: a.Sum(x => x.Total)));
-            }
-
-            _ranking = rankings;
             return this;
 
         }
@@ -65,16 +59,11 @@ namespace codean.analisador.analizadores
             var arquivos = Commits.Value.Select(x => x.Arquivos);
             var arquivosAgrupados = AgruparArquivos(arquivos);
 
-            foreach (var a in arquivosAgrupados)
-            {
-                if (a.Key.Contains($".{extencao.ToString().ToLower()}"))
-                {
-                    rankings.Add(new Ranking(nome: a.Key, total: a.Sum(x => x.Total)));
-                }
+            _ranking = AgruparArquivos(Commits.Value.Select(x => x.Arquivos)).Select(a => {
+                return new Ranking(nome: a.Key, total: a.Sum(x => x.Total));
+                
+            }).Where(x=>x.Nome.Contains($".{extencao.ToString().ToLower()}"));
 
-            }
-
-            _ranking = rankings;
             return this;
         }
 
@@ -91,12 +80,12 @@ namespace codean.analisador.analizadores
             }
         }
 
-        private IEnumerable<Ranking> ObterOsDezMaioresArquivosAlterados(List<Ranking> _ranking)
+        private IEnumerable<Ranking> ObterOsDezMaioresArquivosAlterados(IEnumerable<Ranking> _ranking)
         {
             return _ranking.OrderByDescending(x => x.Total).Take(10);
         }
 
-        private IEnumerable<Ranking> ObterOsTresMaioresArquivosAlterados(List<Ranking> _ranking)
+        private IEnumerable<Ranking> ObterOsTresMaioresArquivosAlterados(IEnumerable<Ranking> _ranking)
         {
             return _ranking.OrderByDescending(x => x.Total).Take(3);
         }

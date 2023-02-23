@@ -17,17 +17,11 @@ namespace codean.analisador.tests
             
         }
 
-        public ICommandTerminal Create()
-        {
-            return new TerminalMock();
-        }
-
         public IFileGitLog CreateStream(string path)
         {
             return new Faker<IFileGitLog>("pt_BR").CustomInstantiator(f => {
                 return new FileGitLogMock(new StringBuilder()
-                .Append("--e342b8e--2022-10-11--dependabot[bot]")
-                .Append(";")
+                .Append("--e342b8e--2022-10-11--dependabot[bot];")
                 .Append(@"1	1	src/CSharp/CodeCracker/Design/StaticConstructorExceptionCodeFixProvider.cs"));
             }).Generate();
         }
@@ -44,7 +38,7 @@ namespace codean.analisador.tests
 
         public void Dispose()
         {
-            
+            GC.SuppressFinalize(this);
         }
 
         public bool ExistsDirectory(string path)
