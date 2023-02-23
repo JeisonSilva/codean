@@ -19,17 +19,10 @@ namespace codean.analisador.leitorarquivo
         internal void ProximaLinha(Action<OrganizadorCommits> organizadorCommits, Action<List<Commit>> fimLeitura)
         {
             foreach (var linha in fileGitLog.ReadLine)
-            {
-                if (string.IsNullOrEmpty(linha))
-                {
-                    fimLeitura(_organizador.Commits.Value);
-                    _organizador.Dispose();
-                }
-                else
-                {
-                    _organizador.AddLinha(linha, organizadorCommits);
-                }
-            }
+                _organizador.AddLinha(linha, organizadorCommits);
+
+            fimLeitura(_organizador.Commits.Value);
+            _organizador.Dispose();
         }
     }
 }

@@ -4,11 +4,6 @@ using codean.analisador.analizadores;
 using codean.analisador.modelodados;
 using codean.analisador.terminais;
 
-Console.WriteLine("Siga os seguintes passos!");
-Console.WriteLine("Entre pelo terminal em algum repositório que gostaria de fazer a análise");
-Console.WriteLine(@"Execute o comando: git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > c:\temp\logfile.log");
-Console.WriteLine("Caso tenha vontade de determinar um periodo de corte utilize depois de --no-renames --after=<YYYY-MM-DD> substituindo por uma data no formato apontado");
-Console.WriteLine();
 Console.WriteLine("Se estiver pronto presione o botão Enter, mas lembre de executar o procedimento a cima!");
 Console.ReadKey();
 
@@ -16,7 +11,7 @@ Console.ReadKey();
 try
 {
     var result = Analisador
-                .Instance(new PowerShellTerminal())
+                .Instance(commandTerminal: PowerShellTerminal.Create())
                 .AnalizarArquivo(new PathFileForAnalysis())
                 .Construir()
                 .ProcessarTotalAlteracoesPorArquivo();

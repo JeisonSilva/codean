@@ -7,7 +7,7 @@ namespace codean.analisador.tests
     {
         private StringBuilder stringBuilder;
 
-        public FileGitLogMock(StringBuilder stringBuilder)
+        public FileGitLogMock(StringBuilder stringBuilder):base(null)
         {
             this.stringBuilder = stringBuilder;
         }
@@ -22,7 +22,7 @@ namespace codean.analisador.tests
                     yield return lista[i];
                 }
 
-                yield return string.Empty;
+                yield break;
             }
         }
     }

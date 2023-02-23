@@ -1,52 +1,51 @@
 ﻿using codean.analisador.leitorarquivo;
+using System.Management.Automation;
 
 namespace codean.analisador.terminais
 {
     public class PowerShellTerminal : ICommandTerminal
     {
-        public void AddScript(string script)
+        private readonly PowerShell _powerShell;
+        private FileStream _file;
+        private StreamReader _stream;
+
+        private PowerShellTerminal(PowerShell powerShell)
         {
-            throw new NotImplementedException();
+            _powerShell = powerShell;
         }
 
-        public ICommandTerminal Create()
-        {
-            throw new NotImplementedException();
-        }
+        public void AddScript(string script)
+            => _powerShell.AddScript(script);
+
+        public static ICommandTerminal Create()
+            => new PowerShellTerminal(PowerShell.Create());
 
         public FileGitLog CreateStream(string path)
         {
-            throw new NotImplementedException();
+            _file = File.OpenRead(path);
+            _stream = new StreamReader(_file);
+            return new FileGitLog(_stream);
         }
 
         public void DeleteDirectory(string path)
-        {
-            throw new NotImplementedException();
-        }
+            => Directory.Delete(path);
 
         public void DeleteFile(string pach)
-        {
-            throw new NotImplementedException();
-        }
+            => File.Delete(pach);
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _file?.Dispose();
+            _stream?.Dispose();
         }
 
         public bool ExistsDirectory(string path)
-        {
-            throw new NotImplementedException();
-        }
+            => Directory.Exists(path);
 
         public void Invoke()
-        {
-            throw new NotImplementedException();
-        }
+            => _powerShell.Invoke();
 
         public bool IsCreatedFile(string path)
-        {
-            throw new NotImplementedException();
-        }
+            => File.Exists(path);
     }
 }
