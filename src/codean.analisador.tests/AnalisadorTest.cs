@@ -70,9 +70,9 @@ namespace codean.analisador.tests
             result.Count().Should().Be(3);
         }
         
-        private static FileGitLog GerarArquivoGitLog()
+        private static IFileGitLog GerarArquivoGitLog()
         {
-            return new Faker<FileGitLog>("pt_BR").CustomInstantiator(f =>
+            return new Faker<IFileGitLog>("pt_BR").CustomInstantiator(f =>
             {
                 return new FileGitLogMock(new StringBuilder()
                 .AppendLine("--e342b8e--2022-10-11--dependabot[bot]")
@@ -81,9 +81,9 @@ namespace codean.analisador.tests
             }).Generate();
         }
 
-        private static FileGitLog GerarArquivoGitLogTop3()
+        private static IFileGitLog GerarArquivoGitLogTop3()
         {
-            return new Faker<FileGitLog>("pt_BR").CustomInstantiator(f =>
+            return new Faker<IFileGitLog>("pt_BR").CustomInstantiator(f =>
             {
                 return new FileGitLogMock(new StringBuilder()
                 .AppendLine("--e342b8e--2022-10-11--dependabot[bot]")
@@ -98,9 +98,9 @@ namespace codean.analisador.tests
         }).Generate();
         }
 
-        private static FileGitLog GerarArquivoGitLogTop10()
+        private static IFileGitLog GerarArquivoGitLogTop10()
         {
-            return new Faker<FileGitLog>("pt_BR").CustomInstantiator(f =>
+            return new Faker<IFileGitLog>("pt_BR").CustomInstantiator(f =>
             {
                 return new FileGitLogMock(new StringBuilder()
                 .AppendLine("--e342b8e--2022-10-11--dependabot[bot]")
@@ -129,9 +129,9 @@ namespace codean.analisador.tests
             }).Generate();
         }
 
-        private static FileGitLog GerarArquivoGitLogTop10ComCsproj()
+        private static IFileGitLog GerarArquivoGitLogTop10ComCsproj()
         {
-            return new Faker<FileGitLog>("pt_BR").CustomInstantiator(f =>
+            return new Faker<IFileGitLog>("pt_BR").CustomInstantiator(f =>
             {
                 return new FileGitLogMock(new StringBuilder()
                 .AppendLine("--e342b8e--2022-10-11--dependabot[bot]")

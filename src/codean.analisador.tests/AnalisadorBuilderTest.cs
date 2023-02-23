@@ -34,9 +34,9 @@ namespace codean.analisador.tests
             analisador.Should().BeAssignableTo<Analisador>();
         }
 
-        private static FileGitLog GerarArquivoGitLog()
+        private static IFileGitLog GerarArquivoGitLog()
         {
-            return new Faker<FileGitLog>("pt_BR").CustomInstantiator(f =>
+            return new Faker<IFileGitLog>("pt_BR").CustomInstantiator(f =>
             {
                 return new FileGitLogMock(new StringBuilder()
                 .AppendLine("--e342b8e--2022-10-11--dependabot[bot]")

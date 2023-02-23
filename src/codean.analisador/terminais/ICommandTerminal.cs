@@ -5,7 +5,7 @@ namespace codean.analisador.terminais
     public interface ICommandTerminal : IDisposable
     {
         void AddScript(string script);
-        FileGitLog CreateStream(string path);
+        IFileGitLog CreateStream(string path);
         void DeleteDirectory(string path);
         void DeleteFile(string pach);
         bool ExistsDirectory(string path);

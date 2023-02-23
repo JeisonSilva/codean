@@ -52,7 +52,7 @@ namespace codean.analisador.modelodados
         internal bool IsCreatedFile(string path)
             => commandTerminal.IsCreatedFile(path);
 
-        internal FileGitLog OpenRead(string path)
+        internal IFileGitLog OpenRead(string path)
             => commandTerminal.CreateStream(path);
     }
 }

@@ -20,7 +20,7 @@ namespace codean.analisador.terminais
         public static ICommandTerminal Create()
             => new PowerShellTerminal(PowerShell.Create());
 
-        public FileGitLog CreateStream(string path)
+        public IFileGitLog CreateStream(string path)
         {
             _file = File.OpenRead(path);
             _stream = new StreamReader(_file);

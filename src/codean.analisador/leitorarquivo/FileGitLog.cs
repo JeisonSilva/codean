@@ -1,6 +1,6 @@
 ﻿namespace codean.analisador.leitorarquivo
 {
-    public class FileGitLog
+    public class FileGitLog : IFileGitLog
     {
         private StreamReader stream;
 

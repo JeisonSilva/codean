@@ -5,16 +5,16 @@ namespace codean.analisador.leitorarquivo
 {
     public class LeitorLinha
     {
-        FileGitLog fileGitLog;
+        IFileGitLog fileGitLog;
         private OrganizadorCommits _organizador;
 
-        private LeitorLinha(FileGitLog fileGitLog)
+        private LeitorLinha(IFileGitLog fileGitLog)
         {
             this.fileGitLog = fileGitLog;
             _organizador = OrganizadorCommits.New();
         }
 
-        internal static LeitorLinha New(FileGitLog fileGitLog) => new LeitorLinha(fileGitLog);
+        internal static LeitorLinha New(IFileGitLog fileGitLog) => new LeitorLinha(fileGitLog);
 
         internal void ProximaLinha(Action<OrganizadorCommits> organizadorCommits, Action<List<Commit>> fimLeitura)
         {

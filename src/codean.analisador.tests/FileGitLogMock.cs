@@ -3,16 +3,16 @@ using System.Text;
 
 namespace codean.analisador.tests
 {
-    public class FileGitLogMock : FileGitLog
+    public class FileGitLogMock : IFileGitLog
     {
         private StringBuilder stringBuilder;
 
-        public FileGitLogMock(StringBuilder stringBuilder):base(null)
+        public FileGitLogMock(StringBuilder stringBuilder)
         {
             this.stringBuilder = stringBuilder;
         }
 
-        public override IEnumerable<string> ReadLine
+        public IEnumerable<string> ReadLine
         {
             get
             {

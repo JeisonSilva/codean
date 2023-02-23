@@ -22,9 +22,9 @@ namespace codean.analisador.tests
             return new TerminalMock();
         }
 
-        public FileGitLog CreateStream(string path)
+        public IFileGitLog CreateStream(string path)
         {
-            return new Faker<FileGitLog>("pt_BR").CustomInstantiator(f => {
+            return new Faker<IFileGitLog>("pt_BR").CustomInstantiator(f => {
                 return new FileGitLogMock(new StringBuilder()
                 .Append("--e342b8e--2022-10-11--dependabot[bot]")
                 .Append(";")
