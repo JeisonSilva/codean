@@ -80,12 +80,12 @@ namespace codean.analisador.analizadores
             }
         }
 
-        private IEnumerable<Ranking> ObterOsDezMaioresArquivosAlterados(IEnumerable<Ranking> _ranking)
+        private static IEnumerable<Ranking> ObterOsDezMaioresArquivosAlterados(IEnumerable<Ranking> _ranking)
         {
             return _ranking.OrderByDescending(x => x.Total).Take(10);
         }
 
-        private IEnumerable<Ranking> ObterOsTresMaioresArquivosAlterados(IEnumerable<Ranking> _ranking)
+        private static IEnumerable<Ranking> ObterOsTresMaioresArquivosAlterados(IEnumerable<Ranking> _ranking)
         {
             return _ranking.OrderByDescending(x => x.Total).Take(3);
         }
