@@ -11,7 +11,7 @@ Console.ReadKey();
 try
 {
     var result = Analisador
-                .Instance(commandTerminal: PowerShellTerminal.Create())
+                .Instance(PowerShellTerminal.Create())
                 .AnalizarArquivo(new PathFileForAnalysis())
                 .Construir()
                 .ProcessarTotalAlteracoesPorArquivo();
